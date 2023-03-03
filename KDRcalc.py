@@ -8,35 +8,31 @@ class KdrCalculator(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        # create labels and entries for kills and deaths
-        kills_label = QLabel()
+        # criar labels e entradas para kills e deaths
         self.kills_entry = QLineEdit()
         self.kills_entry.setPlaceholderText('Kill')
         self.kills_entry.setStyleSheet('border: 1px solid black; font-size: 16px; padding: 5px; text-align: center;')
-        deaths_label = QLabel()
         self.deaths_entry = QLineEdit()
         self.deaths_entry.setPlaceholderText('Death')
         self.deaths_entry.setStyleSheet('border: 1px solid black; font-size: 16px; padding: 5px; text-align: center;')
 
-        # create label for KDR output
+        # criar label para a saída do KDR
         self.kdr_label = QLabel('KDR:')
         self.kdr_label.setStyleSheet('border-bottom: 1px solid black; font-size: 16px; padding: 5px;')
 
-        # create layout and add widgets
+        # criar layout e adicionar widgets
         layout = QVBoxLayout()
-        layout.addWidget(kills_label)
         layout.addWidget(self.kills_entry)
-        layout.addWidget(deaths_label)
         layout.addWidget(self.deaths_entry)
-        layout.addSpacing(10)
+        layout.addWidget(QLabel()) # novo QLabel vazio para adicionar espaçamento
         layout.addWidget(self.kdr_label, alignment=Qt.AlignCenter)
         layout.setContentsMargins(50, 50, 50, 50)
-        layout.setSpacing(0)
+        layout.setSpacing(10) # adiciona espaçamento de 10 pixels entre os widgets
 
-        # set layout
+        # definir layout
         self.setLayout(layout)
 
-        # set window properties
+        # definir propriedades da janela
         self.setWindowTitle('Calculadora de KDR')
         self.setGeometry(400, 300, 200, 200)
         self.setStyleSheet("background-color: #0f0c0c; color: #e5e1e1; border-radius: 4px;")
@@ -44,9 +40,10 @@ class KdrCalculator(QWidget):
         self.setMinimumSize(274, 270)
         self.show()
 
-        # connect signals
+        # conectar sinais
         self.kills_entry.textChanged.connect(self.calculate_kdr)
         self.deaths_entry.textChanged.connect(self.calculate_kdr)
+
 
     def calculate_kdr(self):
         try:
