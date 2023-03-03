@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QVBoxLayout
 from PyQt5.QtCore import Qt
 import sys
+import re
 
 class KdrCalculator(QWidget):
     def __init__(self):
@@ -12,9 +13,11 @@ class KdrCalculator(QWidget):
         self.kills_entry = QLineEdit()
         self.kills_entry.setPlaceholderText('Kill')
         self.kills_entry.setStyleSheet('border: 1px solid black; font-size: 16px; padding: 5px; text-align: center;')
+        self.kills_entry.setAlignment(Qt.AlignCenter) # centralizar texto do input
         self.deaths_entry = QLineEdit()
         self.deaths_entry.setPlaceholderText('Death')
         self.deaths_entry.setStyleSheet('border: 1px solid black; font-size: 16px; padding: 5px; text-align: center;')
+        self.deaths_entry.setAlignment(Qt.AlignCenter) # centralizar texto do input
 
         # criar label para a saída do KDR
         self.kdr_label = QLabel('KDR:')
@@ -44,13 +47,13 @@ class KdrCalculator(QWidget):
         self.kills_entry.textChanged.connect(self.calculate_kdr)
         self.deaths_entry.textChanged.connect(self.calculate_kdr)
 
-
     def calculate_kdr(self):
         try:
             kills = float(self.kills_entry.text())
             deaths = float(self.deaths_entry.text())
             kdr = kills / deaths
-            self.kdr_label.setText('KDR: {:.2f}'.format(kdr))
+            kdr_str = re.sub(r'\d+', lambda x: "<u>{}</u>".format(x.group(0)), "{:.2f}".format(kdr))
+            self.kdr_label.setText('KDR: {}'.format(kdr_str))
         except ZeroDivisionError:
             self.kdr_label.setText('KDR: {:.0f}'.format(kills))
         except ValueError:
